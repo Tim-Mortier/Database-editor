@@ -8,6 +8,7 @@ def run(command_list):
 		message = commands[command].help()
 		if message != None:
 			print(f"{command}: {message}")
+	print("exit: Closes the program")
 
 def help():
 	pass

@@ -1,68 +1,44 @@
 import sqlite3
 import os
+from db.commands_db import get_column_names, get_data, get_headers
 
 def run(command_list):
-	option = command_list[1]
-	options = get_options()
-
-	if option in options:
-		print_table(command_list, option)
+	if len(command_list) != 2:
+		print(get_error_message())
 	else:
-		print_options(options)
+		names = get_column_names()
+		name = command_list[1]
+
+		if name in names:
+			print_table(command_list, name)
+		else:
+			print(get_error_message())
 	
-	
-def get_info(query):
-	dbconnection = sqlite3.connect(f"{os.path.dirname(__file__)[:-12]}db\\expenses.db")
-	cursor = dbconnection.cursor()
-
-	result = cursor.execute(query)
-	return cursor.fetchall()
-
-def get_data(table):
-	query = f"""
-	SELECT *
-	FROM {table}
-	"""
-	return get_info(query)
-
-def get_headers(table):
-	query = f"""
-	PRAGMA table_info({table})
-	"""
-	return get_info(query)
-
-def get_options():
-	query = "SELECT name FROM sqlite_master WHERE type='table';"
-	result = get_info(query)
-
-	options = set()
-	for option in result:
-		options.add(option[0])
-
-	return options
 
 def print_table(command_list, table):
 	headers = get_headers(table)
 	result = ""
 	for header in headers:
-		result += str(header[1]) + " "
+		result += f"{header[1]} "
 	print(result.strip())
 	
 	data = get_data(table)
 	for row in data:
 		result = ""
 		for i in range(len(row)):
-			result += str(row[i]) + " "
+			result += f"{row[i]} "
 		print(result.strip())
 
-def print_options(options):
+def get_string_names(names):
 	result = ""
-	for option in options:
-		result += str(option) + " "
-	print(f"options: {result}")
+	for name in names:
+		result += f"{name} "
+	return result
 
 
-
+def get_error_message():
+	names = get_column_names()
+	return f"usage: <command> <option> <name>\nfor more info type \"help\"\nnames: {get_string_names(names)}"
 
 
 def help():

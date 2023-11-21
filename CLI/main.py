@@ -2,8 +2,6 @@ import importlib
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
 def main():
 	commands = get_commands()
 		
@@ -28,7 +26,9 @@ def print_commands(commands_list):
 	return result
 
 def get_commands():
-	command_dir = os.path.join(os.path.dirname(__file__), 'commands')
+	file_dir = os.path.dirname(__file__)
+	sys.path.append(os.path.dirname(file_dir))
+	command_dir = os.path.join(file_dir, 'commands')
 	print(command_dir)
 	command_files = [f[:-3] for f in os.listdir(command_dir) if f.endswith('.py')]
 
