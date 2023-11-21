@@ -1,4 +1,4 @@
-def run():
+def run(command_list):
 	print("add succes")
 
 def help():

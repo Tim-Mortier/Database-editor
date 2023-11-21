@@ -15,10 +15,10 @@ def main():
 			print("exiting...")
 			break
 		elif command_list[0] not in commands.keys():
-			print("usage: <command> <option>")
-			print("for more help type \"help\"")
+			print("usage: <command> <option> <name>")
+			print("for more info type \"help\"")
 		else:
-			commands[command].run()
+			commands[command_list[0]].run(command_list)
 
 def print_commands(commands_list):
 	result = ""

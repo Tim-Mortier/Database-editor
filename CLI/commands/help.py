@@ -1,6 +1,6 @@
 import importlib
 
-def run():
+def run(command_list):
 	commands = importlib.import_module(f'cli.main').get_commands()
 	print("commands:")
 	print()
