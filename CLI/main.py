@@ -1,22 +1,47 @@
-from commands import *
+import importlib
 import os
+import sys
 
-command_prefixes = set()
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-with os.scandir('commands') as entries:
-	for entry in entries:
-		command_prefixes.add(entry.name.strip(".py"))
+def main():
+	commands = get_commands()
 		
-while True:
-	command = input("command: ")
-	command_list = command.split()
+	while True:
+		command = input("command: ")
+		command_list = command.split()
 
-	if command_list[0] not in command_prefixes:
-		print("Usage: <command> <option>")
-		print(f"Commands: {command_prefixes}")
-	else:
-		print(command)
-		commands.test()
-		break	
+		if command_list[0] == "exit":	
+			print("exiting...")
+			break
+		elif command_list[0] not in commands.keys():
+			print("usage: <command> <option>")
+			print("for more help type \"help\"")
+		else:
+			commands[command].run()
+
+def print_commands(commands_list):
+	result = ""
+	for command in commands_list:
+		result += f"{command} "
+	result += "exit"
+	return result
+
+def get_commands():
+	command_dir = os.path.join(os.path.dirname(__file__), 'commands')
+	print(command_dir)
+	command_files = [f[:-3] for f in os.listdir(command_dir) if f.endswith('.py')]
+
+
+
+	commands = dict()
+	for command in command_files:
+		module = importlib.import_module(f'cli.commands.{command}')
+		commands[command] = module
+	return commands
+
+
+if __name__ == "__main__":
+	main()
 
 
