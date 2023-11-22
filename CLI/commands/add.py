@@ -1,33 +1,34 @@
-from db.commands_db import get_tables, get_data, get_headers, return_string
+from db.commands_db import select_table, get_header_info_to_add, translate, insert
 
 
 def run(command_list):
-	get_record_info()
+	table = select_table(command_list)
+	if table is not None:
+		data = choose_data(table)
+		insert(table, data)
 
 
-def get_record_info():
-	table = choose_table()
-
-	headers = get_headers(table)
-	print(headers)
-	for header in headers:
-		value = input(f"choose {header}: ")
-		print(type(value))
-	print(get_headers("expenses"))
-	#table = input("table: ")
-
-def choose_table():
-	tables = get_tables()
-	while True:	
-		table = input("choose table: ")
-		if table not in tables:
-			print(f"choose out of these tables: {return_string()}")
-		else:
-			return table
-
-
-def get_error_message():
-	print(f"usage: <command> <option> <name>\nfor more info type \"help\"")
+def choose_data(table):
+	header_info = get_header_info_to_add(table)
+	print(header_info)
+	data = list()
+	for info in header_info:
+		while True: 
+			value = input(f"choose {info[1]}: ")
+			sql_type = info[2]
+			try: 
+				if sql_type == "INTEGER":
+					data.append(int(value))
+					break
+				elif sql_type == "NUMERIC":
+					data.append(float(value))
+					break
+				elif sql_type == "TEXT":
+					data.append(f"\'{value}\'")
+					break
+			except:
+				print(f"enter of type {sql_type}")
+	return data
 
 def help():
 	return "Adds a new record to it's table"

@@ -1,14 +1,16 @@
 import sqlite3
 import os
 
-translator = {"TEXT": str, "NUMERIC": int}
+translator = {"TEXT": str, "NUMERIC": float, "INTEGER": int}
 
-def get_info(query):
+def execute_query(query):
 	dbconnection = sqlite3.connect(f"{os.path.dirname(__file__)[:-3]}\\db\\expenses.db")
 	cursor = dbconnection.cursor()
+	return dbconnection, cursor.execute(query)
 
-	result = cursor.execute(query).fetchall()
-	return result
+def get_info(query):
+	dbconnection, result = execute_query(query)
+	return result.fetchall()
 
 def get_tables():
 	query = "SELECT name FROM sqlite_master WHERE type='table';"
@@ -33,6 +35,14 @@ def get_header_info(table):
 	"""
 	return get_info(query)
 
+def get_header_info_to_add(table):
+	info = get_header_info(table)
+	new_info = list()
+	for row in info:
+		if row[5] == 0:
+			new_info.append(row)
+	return new_info
+
 def get_headers(table):
 	info = get_header_info(table)
 	headers = list()
@@ -40,14 +50,21 @@ def get_headers(table):
 		headers.append(row[1])
 	return headers
 
-def return_string(data):
+def get_headers_to_add(table):
+	info = get_header_info_to_add(table)
+	headers = list()
+	for row in info:
+		headers.append(row[1])
+	return headers
+
+def return_string(data, sep=" "):
 	result = ""
 	for row in data:
-		result += f"{row} "
+		result += f"{row}{sep}"
 	return result.strip()
 
-def translate(sql_value):
-	return translator[sql_value]
+def translate(sql_type):
+	return translator[sql_type]
 
 def select_table(command_list):
 	if len(command_list) != 2:
@@ -60,6 +77,20 @@ def select_table(command_list):
 			return table
 		else:
 			print(get_error_message())
+
+def insert(table, data):
+	headers_to_add = get_headers_to_add(table)
+
+	query = f"""
+	INSERT INTO {table}({return_string(headers_to_add, ", ")[:-1]})
+	values({return_string(data, ", ")[:-1]})
+	"""
+
+	print(query)
+
+	dbconnection, result = execute_query(query)
+	dbconnection.commit()
+
 
 def get_error_message():
 	tables = get_tables()
