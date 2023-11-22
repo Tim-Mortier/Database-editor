@@ -10,7 +10,6 @@ def run(command_list):
 
 def choose_data(table):
 	header_info = get_header_info_to_add(table)
-	print(header_info)
 	data = list()
 	for info in header_info:
 		while True: 
@@ -31,4 +30,4 @@ def choose_data(table):
 	return data
 
 def help():
-	return "Adds a new record to it's table"
+	return "Adds a new record to its table"

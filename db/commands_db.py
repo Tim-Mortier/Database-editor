@@ -39,7 +39,7 @@ def get_header_info_to_add(table):
 	info = get_header_info(table)
 	new_info = list()
 	for row in info:
-		if row[5] == 0:
+		if not row[5]:
 			new_info.append(row)
 	return new_info
 
@@ -78,6 +78,17 @@ def select_table(command_list):
 		else:
 			print(get_error_message())
 
+
+def get_primary_key(table_name):
+    query = f"PRAGMA table_info({table_name});"
+    table_info = get_info(query)
+
+    for column in table_info:
+        if column[5]:
+            return column[1]
+
+    return None
+
 def insert(table, data):
 	headers_to_add = get_headers_to_add(table)
 
@@ -86,11 +97,16 @@ def insert(table, data):
 	values({return_string(data, ", ")[:-1]})
 	"""
 
-	print(query)
-
 	dbconnection, result = execute_query(query)
 	dbconnection.commit()
 
+def remove(table, id):
+	query = f"""
+	DELETE FROM {table} WHERE {get_primary_key(table)}={id}
+	"""
+
+	dbconnection, result = execute_query(query)
+	dbconnection.commit()
 
 def get_error_message():
 	tables = get_tables()
