@@ -16,11 +16,11 @@ def get_tables():
 	query = "SELECT name FROM sqlite_master WHERE type='table';"
 	result = get_info(query)
 
-	names = set()
-	for name in result:
-		names.add(name[0])
+	tables = set()
+	for table in result:
+		tables.add(table[0])
 
-	return names
+	return tables
 
 def get_data(table):
 	query = f"""
@@ -79,15 +79,18 @@ def select_table(command_list):
 			print(get_error_message())
 
 
-def get_primary_key(table_name):
-    query = f"PRAGMA table_info({table_name});"
+def get_primary_key(table):
+    query = f"PRAGMA table_info({table})"
     table_info = get_info(query)
 
     for column in table_info:
         if column[5]:
             return column[1]
 
-    return None
+def get_foreign_keys(table):
+	query = f"PRAGMA foreign_key_list({table})"
+	foreign_keys = get_info(query)
+	return foreign_keys
 
 def insert(table, data):
 	headers_to_add = get_headers_to_add(table)
@@ -107,6 +110,19 @@ def remove(table, id):
 
 	dbconnection, result = execute_query(query)
 	dbconnection.commit()
+
+def join_all_tables():
+	tables = get_tables()
+	for table in tables:
+		foreign_keys = get_foreign_keys(table)
+		if len(foreign_keys) != 0:
+			query=f"""
+			SELECT *
+			FROM {table}
+			"""
+			for row in foreign_keys:
+				query +=f"INNER JOIN {row[2]} ON {table}.{row[3]}={row[2]}.{row[4]}"
+			print(return_string(get_info(query)))
 
 def get_error_message():
 	tables = get_tables()
