@@ -1,12 +1,21 @@
 import sqlite3
 import os
-
-translator = {"TEXT": str, "NUMERIC": float, "INTEGER": int}
+from db.error_messages import error_message_table, error_message_record
 
 def execute_query(query):
 	dbconnection = sqlite3.connect(f"{os.path.dirname(__file__)[:-3]}\\db\\expenses.db")
 	cursor = dbconnection.cursor()
 	return dbconnection, cursor.execute(query)
+
+def commit_query(tupel):
+	tupel[0].commit()
+
+def get_values_from_info(info):
+	values = list()
+	for row in info:
+		values.append(row[1])
+	return values
+
 
 def get_info(query):
 	dbconnection, result = execute_query(query)
@@ -45,17 +54,11 @@ def get_header_info_to_add(table):
 
 def get_headers(table):
 	info = get_header_info(table)
-	headers = list()
-	for row in info:
-		headers.append(row[1])
-	return headers
+	return get_values_from_info(info)
 
 def get_headers_to_add(table):
 	info = get_header_info_to_add(table)
-	headers = list()
-	for row in info:
-		headers.append(row[1])
-	return headers
+	return get_values_from_info(info)
 
 def return_string(data, sep=" "):
 	result = ""
@@ -63,12 +66,9 @@ def return_string(data, sep=" "):
 		result += f"{row}{sep}"
 	return result.strip()
 
-def translate(sql_type):
-	return translator[sql_type]
-
 def select_table(command_list):
 	if len(command_list) != 2:
-		print(get_error_message())
+		print(error_message_table(return_string(get_tables())))
 	else:
 		tables = get_tables()
 		table = command_list[1]
@@ -76,7 +76,7 @@ def select_table(command_list):
 		if table in tables:
 			return table
 		else:
-			print(get_error_message())
+			print(error_message_table(return_string(get_tables())))
 
 
 def get_primary_key(table):
@@ -86,6 +86,20 @@ def get_primary_key(table):
     for column in table_info:
         if column[5]:
             return column[1]
+
+def get_primary_key_values(table):
+	primary_key = get_primary_key(table)
+
+	query = f"""
+	SELECT {primary_key}
+	FROM {table}
+	"""
+
+	info = get_info(query)
+	values = list()
+	for row in info:
+		values.append(row[0])
+	return values
 
 def get_foreign_keys(table):
 	query = f"PRAGMA foreign_key_list({table})"
@@ -100,16 +114,20 @@ def insert(table, data):
 	values({return_string(data, ", ")[:-1]})
 	"""
 
-	dbconnection, result = execute_query(query)
-	dbconnection.commit()
+	commit_query(execute_query(query))
 
 def remove(table, id):
 	query = f"""
 	DELETE FROM {table} WHERE {get_primary_key(table)}={id}
 	"""
 
-	dbconnection, result = execute_query(query)
-	dbconnection.commit()
+	commit_query(execute_query(query))
+
+def change(table, id):
+	if id not in get_primary_key_values(table):
+		print(error_message_record(table))
+	else:
+		print("succes")
 
 def join_all_tables():
 	tables = get_tables()
@@ -124,6 +142,3 @@ def join_all_tables():
 				query +=f"INNER JOIN {row[2]} ON {table}.{row[3]}={row[2]}.{row[4]}"
 			print(return_string(get_info(query)))
 
-def get_error_message():
-	tables = get_tables()
-	return f"usage: <command> <table>\nfor more info type \"help\"\ntables: {return_string(tables)}"

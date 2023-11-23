@@ -1,4 +1,4 @@
-from db.commands_db import select_table, get_header_info_to_add, translate, insert
+from db.commands_db import select_table, get_header_info_to_add, insert
 
 
 def run(command_list):
