@@ -1,14 +1,14 @@
 import sqlite3
 import os
-from db.error_messages import error_message_table, error_message_record
+from db.error_messages import error_message_table, error_message
 
 def execute_query(query):
 	dbconnection = sqlite3.connect(f"{os.path.dirname(__file__)[:-3]}\\db\\expenses.db")
 	cursor = dbconnection.cursor()
 	return dbconnection, cursor.execute(query)
 
-def commit_query(tupel):
-	tupel[0].commit()
+def commit_query(tuple):
+	tuple[0].commit()
 
 def get_values_from_info(info):
 	values = list()
@@ -43,6 +43,14 @@ def get_header_info(table):
 	PRAGMA table_info({table})
 	"""
 	return get_info(query)
+
+def get_record(table, id):
+	query= f"""
+	SELECT *
+	FROM {table}
+	WHERE {get_primary_key(table)}={id}
+	"""
+	return get_info(query)[0]
 
 def get_header_info_to_add(table):
 	info = get_header_info(table)
@@ -106,6 +114,18 @@ def get_foreign_keys(table):
 	foreign_keys = get_info(query)
 	return foreign_keys
 
+def check_type(table, header, value):
+	header_info = get_header_info(table)
+	for row in header_info:
+		name = row[1]
+		if name == header:
+			sql_type = row[2]
+			if sql_type == "INTEGER":
+				int(value)
+			elif sql_type == "NUMERIC":
+				float(value)
+			
+
 def insert(table, data):
 	headers_to_add = get_headers_to_add(table)
 
@@ -123,11 +143,17 @@ def remove(table, id):
 
 	commit_query(execute_query(query))
 
-def change(table, id):
-	if id not in get_primary_key_values(table):
-		print(error_message_record(table))
-	else:
-		print("succes")
+def update(table, id, header, value):
+	if type(value) == str:
+		value = f"\"{value}\""
+	query= f"""
+	UPDATE {table} set {header} = {value}
+	WHERE {get_primary_key(table)} == {id}
+	"""
+
+	commit_query(execute_query(query))
+		
+
 
 def join_all_tables():
 	tables = get_tables()

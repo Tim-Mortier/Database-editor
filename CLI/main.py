@@ -29,11 +29,8 @@ def get_commands():
 	file_dir = os.path.dirname(__file__)
 	sys.path.append(os.path.dirname(file_dir))
 	command_dir = os.path.join(file_dir, 'commands')
-	print(command_dir)
 	command_files = [f[:-3] for f in os.listdir(command_dir) if f.endswith('.py')]
-
-
-
+	
 	commands = dict()
 	for command in command_files:
 		module = importlib.import_module(f'cli.commands.{command}')
