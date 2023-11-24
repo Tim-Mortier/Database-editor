@@ -153,9 +153,7 @@ def update(table, id, header, value):
 
 	commit_query(execute_query(query))
 		
-
-
-def join_all_tables():
+def get_joined_table_data():
 	tables = get_tables()
 	for table in tables:
 		foreign_keys = get_foreign_keys(table)
@@ -165,6 +163,16 @@ def join_all_tables():
 			FROM {table}
 			"""
 			for row in foreign_keys:
-				query +=f"INNER JOIN {row[2]} ON {table}.{row[3]}={row[2]}.{row[4]}"
-			print(return_string(get_info(query)))
+				join_table = row[2]
+				fk_join_table = row[4]
+				fk_old_table = row[3]
+				query +=f"INNER JOIN {join_table} ON {table}.{fk_old_table}={join_table}.{fk_join_table}"
+			data = get_info(query)
+			dbconnection, cursor = execute_query(query)
+			headers = list()
+			for header in cursor.description:
+				headers.append(header[0])
+			data.insert(0, tuple(headers))
+			return data
+
 

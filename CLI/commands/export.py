@@ -1,10 +1,22 @@
 import csv
-from db.commands_db import join_all_tables
+import shutil
+import os
+from db.commands_db import get_joined_table_data
+
 def run(command_list):
-	#name = input("Name of the created file: ")
-	join_all_tables()
-	#with open(f"{name}.csv", 'x', newline='') as file:
-	#	writer = csv.writer(file, delimiter=";")
+	file_name = input("Name of the created file: ")
+	os.chdir(f"{os.getcwd()}\\exports")
+	try:
+		export_table_data(file_name)
+	except:
+		print("file already exists, please choose another")
+	os.chdir("..")
+	
+def export_table_data(file_name):
+	with open(f"{file_name}.csv", 'x', newline='') as file:
+		writer = csv.writer(file, delimiter=";")
+		for row in get_joined_table_data():
+			writer.writerow(row)
 
 def help():
 	return "Exports the database to a new csv file"
