@@ -20,3 +20,6 @@ def export_table_data(file_name):
 
 def help():
 	return "Exports the database to a new csv file"
+
+def detailed_help():
+	return f"\t{help()}\n\tUsage: export"

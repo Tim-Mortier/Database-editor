@@ -24,4 +24,7 @@ def get_error_message():
 
 
 def help():
-	return "Shows your expenses or its categories"
+	return "Shows a table of the database"
+
+def detailed_help():
+	return f"\t{help()}\n\tUsage: see <table>"

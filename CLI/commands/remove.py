@@ -9,3 +9,6 @@ def run(command_list):
 
 def help():
 	return "Removes a record from its table"
+
+def detailed_help():
+	return f"\t{help()}\n\tUsage: remove <table>\n\tWhen executing more input will be required of the record's id"

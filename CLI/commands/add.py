@@ -24,3 +24,6 @@ def choose_data(table):
 
 def help():
 	return "Adds a new record to its table"
+
+def detailed_help():
+	return f"\t{help()}\n\tUsage: add <table>"
