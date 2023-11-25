@@ -1,9 +1,9 @@
 def error_message_table(tables):
-	return f"usage: <command> <table>\nfor more info type \"help\"\ntables: {tables}"
+	return f"\tusage: <command> <table>\n\tfor more info type <help>\n\ttables: {tables}"
 
 def error_message_type():
-	return "please enter a value with a type corresponding to its header type"
+	return "\tplease enter a value with a type corresponding to its header type"
 
 def error_message(table, item):
-	return f"please enter a(n) {item} that exists in {table}\nto see records, write: see {table}"
+	return f"\tplease enter a(n) {item} that exists in {table}\n\tto see records, write: see {table}"
 

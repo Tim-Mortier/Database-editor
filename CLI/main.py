@@ -14,8 +14,7 @@ def main():
 			print("exiting...")
 			break
 		elif command_list[0] not in commands.keys():
-			print("usage: <command> <option> <name>")
-			print("for more info type \"help\"")
+			print("\tfor more info type <help>")
 		else:
 			commands[command_list[0]].run(command_list)
 
@@ -25,8 +24,5 @@ def print_commands(commands_list):
 		result += f"{command} "
 	result += "exit"
 	return result
-
-if __name__ == "__main__":
-	main()
 
 

@@ -44,7 +44,7 @@ def get_header_info(table):
 	"""
 	return get_info(query)
 
-def get_record(table, id):
+def get_record_data(table, id):
 	query= f"""
 	SELECT *
 	FROM {table}

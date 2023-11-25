@@ -9,14 +9,14 @@ def run(command_list):
 
 def print_table(table):
 	headers = get_headers(table)
-	print(return_string(headers))
+	print(f"\t{return_string(headers)}")
 	
 	data = get_data(table)
 	for row in data:
 		result = ""
 		for i in range(len(row)):
 			result += f"{row[i]} "
-		print(result.strip())
+		print(f"\t{result.strip()}")
 
 def get_error_message():
 	tables = get_tables()
