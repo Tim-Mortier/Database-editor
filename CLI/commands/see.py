@@ -1,6 +1,4 @@
-import sqlite3
-import os
-from db.functions.getters import get_tables, get_table_values, get_headers, get_table, get_string
+from db.functions.getters import get_table_values, get_headers, get_table, get_string
 
 def run(command_list):
 	table = get_table(command_list)
@@ -17,11 +15,6 @@ def print_table(table):
 		for i in range(len(row)):
 			result += f"{row[i]} "
 		print(f"\t{result.strip()}")
-
-#def get_error_message():
-#	tables = get_tables()
-#	return f"usage: <command> <option> <table>\nfor more info type \"help\"\ntables: {get_string(tables)}"
-
 
 def help():
 	return "Shows a table of the database"

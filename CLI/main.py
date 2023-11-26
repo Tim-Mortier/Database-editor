@@ -10,7 +10,9 @@ def main():
 		command = input("command: ")
 		command_list = command.split()
 
-		if command_list[0] == "exit":	
+		if len(command_list) == 0:
+			print("\tfor more info type <help>")
+		elif command_list[0] == "exit":	
 			print("exiting...")
 			break
 		elif command_list[0] not in commands.keys():

@@ -1,5 +1,4 @@
 import csv
-import shutil
 import os
 from db.functions.getters import get_joined_table_data
 

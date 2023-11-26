@@ -1,12 +1,12 @@
-from db.functions.getters import get_headers_without_pk, get_string, get_primary_key, get_primary_key_values
+from db.functions.getters import get_headers, get_string, get_primary_key
 from db.functions.sqllite_functions import execute_query, commit_query
 
 
 def insert(table, data):
-	headers_without_pk = get_headers_without_pk(table)
+	headers = get_headers(table, with_pk=False)
 
 	query = f"""
-	INSERT INTO {table}({get_string(headers_without_pk, ", ")[:-1]})
+	INSERT INTO {table}({get_string(headers, ", ")[:-1]})
 	values({get_string(data, ", ")[:-1]})
 	"""
 

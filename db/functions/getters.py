@@ -2,29 +2,24 @@ import sqlite3
 from db.functions.sqllite_functions import execute_query
 from db.error_messages import error_message_table
 
-
-#get_info
 def get_data_from_query(query):
 	dbconnection, result = execute_query(query)
 	return result.fetchall()
-#get_values_from_info
-def get_values_from_data(data):
-	values = list()
-	for row in data:
-		values.append(row[1])
-	return values
+
+def get_headers_from_query(query):
+	dbconnection, cursor = execute_query(query)
+	headers = [header[0] for header in cursor.description]
+	return headers
+
+
+def get_values_from_data(data, place):
+	return [row[place] for row in data]
 
 def get_tables():
 	query = "SELECT name FROM sqlite_master WHERE type='table';"
 	result = get_data_from_query(query)
+	return get_values_from_data(result, place=0)
 
-	tables = set()
-	for table in result:
-		tables.add(table[0])
-
-	return tables
-
-#select_table
 def get_table(command_list):
 	if len(command_list) != 2:
 		print(error_message_table(get_string(get_tables())))
@@ -37,7 +32,6 @@ def get_table(command_list):
 		else:
 			print(error_message_table(get_string(get_tables())))
 
-#get_data
 def get_table_values(table):
 	query = f"""
 	SELECT *
@@ -45,12 +39,16 @@ def get_table_values(table):
 	"""
 	return get_data_from_query(query)
 
-#get_header_info
-def get_header_data(table):
+def get_header_data(table, with_pk=True):
 	query = f"""
 	PRAGMA table_info({table})
 	"""
-	return get_data_from_query(query)
+
+	data = get_data_from_query(query)
+	if with_pk:
+		return data
+	else:
+		return [row for row in data if not row[5]]
 
 def get_record_data(table, id):
 	query= f"""
@@ -60,23 +58,10 @@ def get_record_data(table, id):
 	"""
 	return get_data_from_query(query)[0]
 
-#get_header_info_to_add
-def get_header_data_without_pk(table):
-	data = get_header_data(table)
-	data_withouth_pk = list()
-	for row in data:
-		if not row[5]:
-			data_withouth_pk.append(row)
-	return data_withouth_pk
 
-def get_headers(table):
-	data = get_header_data(table)
-	return get_values_from_data(data)
-
-#get_headers_to_add
-def get_headers_without_pk(table):
-	info = get_header_data_without_pk(table)
-	return get_values_from_data(info)
+def get_headers(table, with_pk=True):
+	data = get_header_data(table, with_pk)
+	return get_values_from_data(data, place=1)
 
 def get_primary_key(table):
     query = f"PRAGMA table_info({table})"
@@ -93,12 +78,8 @@ def get_primary_key_values(table):
 	SELECT {primary_key}
 	FROM {table}
 	"""
-
-	info = get_data_from_query(query)
-	values = list()
-	for row in info:
-		values.append(row[0])
-	return values
+	data = get_data_from_query(query)
+	return get_values_from_data(data, place=0)
 
 def get_joined_table_data():
 	tables = get_tables()
@@ -115,11 +96,8 @@ def get_joined_table_data():
 				fk_old_table = row[3]
 				query +=f"INNER JOIN {join_table} ON {table}.{fk_old_table}={join_table}.{fk_join_table}"
 			data = get_data_from_query(query)
-			dbconnection, cursor = execute_query(query)
-			headers = list()
-			for header in cursor.description:
-				headers.append(header[0])
-			data.insert(0, tuple(headers))
+			headers = get_headers_from_query(query)
+			data.insert(0, headers)
 			return data
 
 def get_foreign_keys(table):
