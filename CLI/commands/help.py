@@ -1,5 +1,5 @@
 import importlib
-from cli.help_commands import get_commands
+from cli.functions import get_commands
 
 def run(command_list):
 	commands = get_commands()

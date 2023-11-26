@@ -1,8 +1,9 @@
-from db.commands_db import select_table, remove
-from cli.help_commands import choose_id
+from db.functions.table_updates import remove
+from db.functions.getters import get_table
+from cli.functions import choose_id
 
 def run(command_list):
-	table = select_table(command_list)
+	table = get_table(command_list)
 	if table is not None:
 		id = choose_id()
 		remove(table, id)

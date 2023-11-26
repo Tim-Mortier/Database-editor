@@ -1,14 +1,15 @@
 import csv
 import shutil
 import os
-from db.commands_db import get_joined_table_data
+from db.functions.getters import get_joined_table_data
 
 def run(command_list):
 	file_name = input("Name of the created file: ")
 	os.chdir(f"{os.getcwd()}\\exports")
 	try:
 		export_table_data(file_name)
-	except:
+	except Exception as e:
+		print(e)
 		print("file already exists, please choose another")
 	os.chdir("..")
 	

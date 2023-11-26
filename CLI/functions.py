@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+from db.functions.getters import get_header_data
 
 def choose_id():
 	while True:
@@ -21,3 +22,14 @@ def get_commands():
 		module = importlib.import_module(f'cli.commands.{command}')
 		commands[command] = module
 	return commands
+
+def check_type(table, header, value):
+	header_info = get_header_data(table)
+	for row in header_info:
+		name = row[1]
+		if name == header:
+			sql_type = row[2]
+			if sql_type == "INTEGER":
+				int(value)
+			elif sql_type == "NUMERIC":
+				float(value)

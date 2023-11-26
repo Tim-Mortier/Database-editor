@@ -1,7 +1,7 @@
 import importlib
 import os
 import sys
-from cli.help_commands import get_commands
+from cli.functions import get_commands
 
 def main():
 	commands = get_commands()

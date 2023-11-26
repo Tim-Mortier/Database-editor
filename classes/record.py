@@ -1,4 +1,4 @@
-from db.commands_db import return_string
+from db.functions.getters import get_string
 
 class Record():
 	def __init__(self, headers, data):
@@ -9,7 +9,7 @@ class Record():
 		return self.__headers
 
 	def __str__(self):
-		return f"\t{return_string(self.__headers)}\n\t{return_string(self.__data)}"
+		return f"\t{get_string(self.__headers)}\n\t{get_string(self.__data)}"
 
 
 

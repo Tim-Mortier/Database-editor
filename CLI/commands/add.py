@@ -1,15 +1,17 @@
-from db.commands_db import select_table, get_headers_to_add, insert, check_type
+from cli.functions import check_type
+from db.functions.getters import get_headers_without_pk, get_table
+from db.functions.table_updates import insert
 from db.error_messages import error_message_type
 
 def run(command_list):
-	table = select_table(command_list)
+	table = get_table(command_list)
 	if table is not None:
 		data = choose_data(table)
 		insert(table, data)
 
 
 def choose_data(table):
-	headers = get_headers_to_add(table)
+	headers = get_headers_without_pk(table)
 	data = list()
 	for header in headers:
 		value = input(f"choose {header}: ")

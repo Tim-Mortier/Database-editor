@@ -1,10 +1,11 @@
-from cli.help_commands import choose_id
-from db.commands_db import select_table, get_primary_key_values, get_record_data, get_headers, return_string, check_type, update
+from cli.functions import choose_id, check_type
+from db.functions.getters import get_primary_key_values, get_record_data, get_headers, get_table
+from db.functions.table_updates import update
 from db.error_messages import error_message, error_message_type
 from classes.record import Record
 
 def run(command_list):
-	table = select_table(command_list)
+	table = get_table(command_list)
 	if table is not None:
 		id = choose_id()
 		if id not in get_primary_key_values(table):
@@ -22,7 +23,8 @@ def run(command_list):
 				try:
 					check_type(table, header, value)
 					update(table, id, header, value)
-				except:
+				except Exception as e:
+					print(e)
 					print(error_message_type())
 
 def help():
