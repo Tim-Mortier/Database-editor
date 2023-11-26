@@ -14,14 +14,16 @@ def choose_data(table):
 	headers = get_headers_without_pk(table)
 	data = list()
 	for header in headers:
-		value = input(f"choose {header}: ")
-		try: 
-			check_type(table, header, value)
-			if type(value) == str:
-				value = f"\'{value}\'"
-			data.append(value)
-		except:
-			print(error_message_type())
+		while True:
+			value = input(f"choose {header}: ")
+			try: 
+				check_type(table, header, value)
+				if type(value) == str:
+					value = f"\'{value}\'"
+				data.append(value)
+				break
+			except:
+				print(error_message_type())
 	return data
 
 def help():
