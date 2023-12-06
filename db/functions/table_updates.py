@@ -6,8 +6,8 @@ def insert(table, data):
 	headers = get_headers(table, with_pk=False)
 
 	query = f"""
-	INSERT INTO {table}({get_string(headers, ", ")[:-1]})
-	values({get_string(data, ", ")[:-1]})
+	INSERT INTO {table}({get_string_table(headers, ", ")[:-1]})
+	values({get_string_table(data, ", ")[:-1]})
 	"""
 
 	commit_query(execute_query(query))

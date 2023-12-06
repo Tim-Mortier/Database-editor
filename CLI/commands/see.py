@@ -1,4 +1,4 @@
-from db.functions.getters import get_table_values, get_headers, get_table, get_string
+from db.functions.getters import get_table_values, get_headers, get_table, get_string_table
 
 def run(command_list):
 	table = get_table(command_list)
@@ -7,13 +7,13 @@ def run(command_list):
 
 def print_table(table):
 	headers = get_headers(table)
-	print(f"\t{get_string(headers)}")
+	print(f"\t{get_string_table(headers):<10}")
 	
 	data = get_table_values(table)
 	for row in data:
 		result = ""
 		for i in range(len(row)):
-			result += f"{row[i]} "
+			result += f"{row[i]:<15}"
 		print(f"\t{result.strip()}")
 
 def help():

@@ -105,8 +105,14 @@ def get_foreign_keys(table):
 	foreign_keys = get_data_from_query(query)
 	return foreign_keys
 
-def get_string(data, sep=" "):
+def get_string(data, sep=", "):
 	result = ""
 	for row in data:
 		result += f"{row}{sep}"
+	return result[:-len(sep)]
+
+def get_string_table(data):
+	result = ""
+	for row in data:
+		result += f"{row:<15}"
 	return result.strip()
