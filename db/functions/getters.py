@@ -1,5 +1,5 @@
 from db.functions.sqllite_functions import execute_query, get_connection
-from db.error_messages import InvalidTableCommandError
+from error_messages import InvalidTableCommandError
 import pandas as pd
 
 
@@ -121,7 +121,7 @@ def get_string(data, sep=", "):
 	result = ""
 	for row in data:
 		result += f"{row}{sep}"
-	return result.strip()
+	return result[:-len(sep)]
 
 
 def get_data_query(table):

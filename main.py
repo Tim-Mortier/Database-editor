@@ -1,6 +1,5 @@
 from cli.cli_functions import get_commands
-from db.error_messages import TableValueNotFoundError, InvalidTableCommandError
-import settings
+from error_messages import TableValueNotFoundError, InvalidTableCommandError
 
 
 def main():
