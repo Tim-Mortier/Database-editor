@@ -1,6 +1,7 @@
 from db.functions.getters import get_string
 
-class Record():
+
+class Record:
 	def __init__(self, headers, data):
 		self.__headers = headers 
 		self.__data = data

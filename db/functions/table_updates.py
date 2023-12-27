@@ -1,4 +1,4 @@
-from db.functions.getters import get_headers, get_string, get_primary_key
+from db.functions.getters import get_headers, get_primary_key, get_string
 from db.functions.sqllite_functions import execute_query, commit_query
 
 
@@ -6,11 +6,12 @@ def insert(table, data):
 	headers = get_headers(table, with_pk=False)
 
 	query = f"""
-	INSERT INTO {table}({get_string_table(headers, ", ")[:-1]})
-	values({get_string_table(data, ", ")[:-1]})
+	INSERT INTO {table}({get_string(headers, ", ")[:-1]})
+	values({get_string(data, ", ")[:-1]})
 	"""
 
 	commit_query(execute_query(query))
+
 
 def remove(table, id):
 	query = f"""
@@ -18,6 +19,7 @@ def remove(table, id):
 	"""
 
 	commit_query(execute_query(query))
+
 
 def update(table, id, header, value):
 	if type(value) == str:

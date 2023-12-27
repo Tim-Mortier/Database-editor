@@ -3,6 +3,7 @@ import sys
 import importlib
 from db.functions.getters import get_header_data
 
+
 def choose_id():
 	while True:
 		id = input("choose id: ")
@@ -10,6 +11,7 @@ def choose_id():
 			return int(id)
 		except:
 			print("Please choose a number")
+
 
 def get_commands():
 	file_dir = os.path.dirname(__file__)
@@ -22,6 +24,7 @@ def get_commands():
 		module = importlib.import_module(f'cli.commands.{command}')
 		commands[command] = module
 	return commands
+
 
 def check_type(table, header, value):
 	header_info = get_header_data(table)
