@@ -12,9 +12,6 @@ db/expenses.db
 # Settingsfile
 settings.py
 
-#exportfiles
-*.csv
-
 
 # Distribution / packaging
 .Python
