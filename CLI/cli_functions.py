@@ -9,7 +9,7 @@ def choose_id():
 		id = input("choose id: ")
 		try:
 			return int(id)
-		except:
+		except ValueError:
 			print("Please choose a number")
 
 

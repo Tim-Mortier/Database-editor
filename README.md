@@ -1,6 +1,6 @@
-# assignment_python
+# Database editor
 ## Explanation of the program
-This program can edit and show almost any SQLLite database using the terminal.
+This program can edit and show almost any SQLLite database using the terminal. The program can't create a new database. It only works when a database is given.
 The following commands are implemented:
 - add: adds a new record to its table
 - change: change a record in its table
@@ -35,5 +35,7 @@ Make a settings.py file with the following code:
 from os import path
 import os
 
+MAIN_PATH = os.getcwd()
 DATABASE_PATH = path.join(os.getcwd(), "db", "expenses.db")
+EXPORT_PATH = path.join(os.getcwd(), "exports")
 ```

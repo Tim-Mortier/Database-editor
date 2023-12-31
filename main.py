@@ -1,5 +1,5 @@
 from cli.cli_functions import get_commands
-from error_messages import TableValueNotFoundError, InvalidTableCommandError
+from errors import TableValueNotFoundError, InvalidTableCommandError
 
 
 def main():
@@ -25,8 +25,8 @@ def main():
 				print(e)
 			except ValueError:
 				print("\tplease enter a value with a type corresponding to its header type")
-			except TypeError:
-				print("\tToo many arguments, for more info type help")
+			# except TypeError:
+			# 	print("\tToo many arguments, for more info type help")
 
 
 def print_commands(commands_list):

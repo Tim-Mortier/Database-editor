@@ -1,5 +1,5 @@
 from db.functions.sqllite_functions import execute_query, get_connection
-from error_messages import InvalidTableCommandError
+from errors import InvalidTableCommandError
 import pandas as pd
 
 
