@@ -1,6 +1,6 @@
 from db.functions.table_updates import remove
 from db.functions.getters import get_table, get_primary_key_values
-from cli.cli_functions import choose_id
+from CLI.cli_functions import choose_id
 
 
 def run(command_list):

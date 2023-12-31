@@ -1,4 +1,4 @@
-from cli.cli_functions import check_type
+from CLI.cli_functions import check_type
 from db.functions.getters import get_headers, get_table
 from db.functions.table_updates import insert
 

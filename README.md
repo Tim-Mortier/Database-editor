@@ -4,13 +4,13 @@ This program can edit and show almost any SQLLite database using the terminal. T
 The following commands are implemented:
 - add: adds a new record to its table
 - change: change a record in its table
-- export: exports the database to a new csv file this command only fully works when one table of the database references all the other tables
+- export: exports the database to a new csv file. This command only fully works when only one table of the database references all the other tables
 - help: gives the use case of a command and gives its usage
 - remove: removes a record from its table
 - see: shows a table of the database
 
 ## Explanation of the given database
-The expenses database consists of two tables.
+The expenses database consists of two tables
 
 ### Expenses table
 Fields:
@@ -28,6 +28,9 @@ Fields:
 ## Configuration
 ### expenses.db placement
 Place the expenses.db file in the db directory
+
+### exports directory
+delete the "deleteme.txt" file
 
 ### Settings file
 Make a settings.py file with the following code:

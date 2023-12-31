@@ -1,4 +1,4 @@
-from cli.cli_functions import choose_id, check_type
+from CLI.cli_functions import choose_id, check_type
 from db.functions.getters import get_primary_key_values, get_record_data, get_headers, get_table
 from db.functions.table_updates import update
 from errors import TableValueNotFoundError

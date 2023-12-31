@@ -1,4 +1,4 @@
-from cli.cli_functions import get_commands
+from CLI.cli_functions import get_commands
 from errors import TableValueNotFoundError, InvalidTableCommandError
 
 
