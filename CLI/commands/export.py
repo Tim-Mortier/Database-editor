@@ -1,18 +1,18 @@
 import csv
 import os
 from db.functions.getters import get_joined_table_data
+from settings import EXPORT_PATH, MAIN_PATH
 
 
-def run():
+def run(command_list):
 	file_name = input("Name of the created file: ")
-	os.chdir(f"{os.getcwd()}\\exports")
+	os.chdir(EXPORT_PATH)
 	try:
 		export_table_data(file_name)
-	except Exception as e:
-		print(e)
-		print("file already exists, please choose another")
+	except FileExistsError:
+		print("\tfile already exists, please choose another")
 	finally:
-		os.chdir("..")
+		os.chdir(MAIN_PATH)
 
 
 def export_table_data(file_name):
